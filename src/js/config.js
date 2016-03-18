@@ -14,6 +14,7 @@ System.config({
 
   map: {
     "guardian/iframe-messenger": "github:guardian/iframe-messenger@master",
+    "jquery": "npm:jquery@2.2.1",
     "json": "github:systemjs/plugin-json@0.1.0",
     "reqwest": "github:ded/reqwest@1.1.5",
     "text": "github:systemjs/plugin-text@0.0.2",
