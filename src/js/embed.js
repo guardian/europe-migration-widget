@@ -29,15 +29,20 @@ function buildView ( data ) {
      
      console.log(dataset)
      
-     var i, countryData, countryName, html= "", bulletsHTML, tabsHTML = "", graphHTML, dataType;
+     var i, countryData, countryName, html, bulletsHTML, tabsHTML, mapHTML, imageHTML, graphHTML, dataType;
+     
+     html = "";
+     tabsHTML = "";
      
 
 for (var d in dataset) {
     
-    countryData = dataset[d];
-   bulletsHTML = "<ul>";
+   html += '<div id="country-block_' + d + '" class="country-block" >';
+   countryData = dataset[d];
+   bulletsHTML = '<ul class="country-bullets-list">';
+   mapHTML = "";
    graphHTML = "";
-
+   imageHTML = "";
 
  for ( i = 0; i < countryData.length; i++ ) {
         
@@ -48,26 +53,32 @@ for (var d in dataset) {
        switch (dataType) {
            
            case "name" :
-            countryName = "<h2>" + countryData[i]["Value"] + "</h2>";
+            countryName = '<h2 class="country-name">' + countryData[i]["Value"] + '</h2>';
             tabsHTML += '<option value="' + d + '">' + countryData[i]["Value"] + '</option>';
            break;
            
            case "bullet" :
-           bulletsHTML += "<li>" + countryData[i]["Value"] + "</li>";
+           bulletsHTML += '<li class="country-bullet">' + countryData[i]["Value"] + '</li>';
            break;
            
             case "graph" :
+                graphHTML = "";
+           break;
            
+           case "locator map" :
+                mapHTML = '<div class="country-locator-map"></div>';
+           break;
+           
+           case "image" :
+                imageHTML = '<div class="country-image"></div>';
            break;
        }
         
 
     }
-    
+    graphHTML = '<div class="country-graph"></div>';
     bulletsHTML+= "</ul>";
-    html += countryName + bulletsHTML;
-
-
+    html += '<div class="country-graphics">' + imageHTML + graphHTML + '</div>'  + mapHTML + countryName + bulletsHTML + "</div>";
 
 }
     

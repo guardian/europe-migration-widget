@@ -1,5 +1,6 @@
 @import "fonts";
 @import "mq";
+@import "grid-system";
 
 html,
 body {
@@ -31,4 +32,111 @@ time, mark, audio, video {
   vertical-align: baseline;
   line-height: 1em;
 }
+}
+
+#widget-container {
+    background: #fff;
+    border-top: 1px solid #4bc6df;
+    padding: 12px 0 12px 0;
+    
+    #country-select {
+        float: right;   
+    }
+    
+    .widget-header {
+       padding-bottom: 8px;
+    }
+    
+     .widget-header:after {
+        clear:both;
+        content:"";
+        display:block;
+        width: 100%;
+    }
+    
+    .country-block {
+        position: relative;
+        border-top: 1px solid #eaeaea;
+        padding: 0;
+        overflow: hidden;
+     }
+     
+     .country-graphics {
+        width: 30%;
+       position: absolute;
+        height: 100%;
+        top: 0;
+        right: 0;
+        background: #eaeaea;
+    }
+    
+     .country-graphics:after {
+      clear: both;
+      content: "";
+      display: block;
+    }
+     
+    .country-locator-map {
+        background: #dcdcdc;
+        display: none;
+         @include mq(mobileLandscape){
+           display: block;
+            width: 100px;
+            height: 100px;
+            position: absolute;
+      } 
+    }
+    
+    .country-graph {
+        width: 100%;
+        padding-bottom: 100%;
+        background: #767676;
+    }
+    
+    .country-bullets-list {
+       display: block;
+    }
+   
+    .country-bullet {
+       padding: 8px 0 8px 0;
+       margin-left: 20px;
+        font-size: 16px;
+        line-height: 1.2em;
+       display:list-item;
+        font-family: Guardian Text Sans Web,Arial,sans-serif;
+        font-weight: 600;
+        list-style-type: disc;
+        color: #767676;
+        width: 55%;
+         @include mq(mobileLandscape){
+           margin-left: 132px;
+           width: 45%;
+      } 
+    }
+    
+   
+ 
+
+h1, h2 {
+    font-family: "Guardian Egyptian Web", Georgia, Serif;
+}
+
+h1 {
+    font-weight: 600;
+    font-size: 18px;
+    padding-bottom: 8px;
+}
+
+h2 {
+    font-weight: 600;
+    font-size: 24px;
+    padding: 8px 0 8px 0;
+    color: #4bc6df;
+    display: block;
+     @include mq(mobileLandscape){
+           padding-left: 112px;
+      } 
+    
+}
+
 }
