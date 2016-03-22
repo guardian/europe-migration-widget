@@ -13,6 +13,7 @@ System.config({
   },
 
   map: {
+    "d3": "npm:d3@3.5.16",
     "guardian/iframe-messenger": "github:guardian/iframe-messenger@master",
     "jquery": "npm:jquery@2.2.1",
     "json": "github:systemjs/plugin-json@0.1.0",

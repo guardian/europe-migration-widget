@@ -1,6 +1,7 @@
 import iframeMessenger from 'guardian/iframe-messenger'
 import reqwest from 'reqwest'
 import $ from 'jquery'
+import d3 from 'd3'
 import embedHTML from './text/embed.html!text'
 
 var dataset = null;
@@ -17,22 +18,31 @@ window.init = function init(el, config) {
         url: 'https://interactive.guim.co.uk/docsdata/1bRz4W9fo4IFrdwq8gj44H77tdZtvyJ9k_LJt614scpg.json',
         type: 'json',
         crossOrigin: true,
-        success: (resp) => buildView( resp )
+        success: (resp) => setupApp( resp )
     });
 };
 
+function setupApp ( data ) {
+    console.log(d3);
+    dataset = data.sheets;
+     
+    console.log(dataset)
+     
+    buildView ( );
+    
+    addListeners();
+}
+
 // success: (resp) => el.querySelector('.test-msg').innerHTML = `Your IP address is ${resp.ip}`
 
-function buildView ( data ) {
+function buildView ( ) {
     
-     dataset = data.sheets;
      
-     console.log(dataset)
      
      var i, countryData, countryName, html, bulletsHTML, tabsHTML, mapHTML, imageHTML, graphHTML, dataType;
      
      html = "";
-     tabsHTML = "";
+     tabsHTML = "<option selected disabled>Select country</option>";
      
 
 for (var d in dataset) {
@@ -85,10 +95,25 @@ for (var d in dataset) {
    
    $("select").html(tabsHTML);
    $(".countries-container").html(html);
-    
-    
-    
+   
+   if ( selected !== null ) {
+       $(".country-block").hide();
+       $("#country-block_" + selected).show();
+       //$("select option[value='" + selected + "']").attr("selected","selected");
+   }
 
+}
+
+function addListeners() {
+    $(".toggle-button").click( function (e) {
+        $(".country-block").show();
+    });
+    
+    $("#country-select").change(function() {
+        selected = $(this).val();
+    $(".country-block").hide();
+    $("#country-block_" + selected).show();
+});
 }
 
 function getParameter(paramName) {

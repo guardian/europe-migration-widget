@@ -40,6 +40,7 @@ time, mark, audio, video {
     padding: 12px 0 12px 0;
     
     #country-select {
+        clear: both;
         float: right;   
     }
     
@@ -54,20 +55,55 @@ time, mark, audio, video {
         width: 100%;
     }
     
+    .widget-footer {
+        padding: 12px 0 12px 0;
+         border-top: 1px solid #eaeaea;
+         border-bottom: 1px solid #eaeaea;
+         
+         .toggle-button {
+             font-family: Guardian Text Sans Web, Arial,sans-serif;
+             display: inline-block;
+                font-weight: 500;      
+                font-size: 13px;
+                color: #fff;
+                // background: #4bc6df;
+                padding: 2px 12px 2px 5px;
+                border-radius: 15px;
+                cursor: pointer;
+                
+                
+background-color: #005689;
+border-color: #005689;
+                
+                .inline-icon {
+    fill: #ffffff;
+    width: 10px;
+}
+.button-text {
+    vertical-align: 50%;
+}
+         }
+    }
+    
     .country-block {
         position: relative;
         border-top: 1px solid #eaeaea;
         padding: 0;
+        margin-bottom: 12px;
         overflow: hidden;
      }
      
      .country-graphics {
-        width: 30%;
+        width: 40%;
        position: absolute;
         height: 100%;
         top: 0;
         right: 0;
-        background: #eaeaea;
+        border-left: 1px solid #eaeaea;
+        // background: #eaeaea;
+         @include mq(mobileLandscape){
+          width: 30%;
+      } 
     }
     
      .country-graphics:after {
@@ -93,23 +129,41 @@ time, mark, audio, video {
         background: #767676;
     }
     
+    ul {
+    list-style: none;
+    padding:0;
+    margin:0;
+}
+
+li { 
+    padding-left: 1em; 
+    
+}
+
+li:before {
+    content: "• ";
+    font-size: 40px;
+    color: #4bc6df;
+    vertical-align: bottom;
+}
+    
     .country-bullets-list {
        display: block;
     }
    
     .country-bullet {
        padding: 8px 0 8px 0;
-       margin-left: 20px;
+       margin-left: 0;
         font-size: 16px;
         line-height: 1.2em;
-       display:list-item;
+       display: block;
         font-family: Guardian Text Sans Web,Arial,sans-serif;
-        font-weight: 600;
-        list-style-type: disc;
+        font-weight: 500;
+        // list-style-type: disc;
         color: #767676;
         width: 55%;
          @include mq(mobileLandscape){
-           margin-left: 132px;
+           margin-left: 112px;
            width: 45%;
       } 
     }
@@ -124,19 +178,31 @@ h1, h2 {
 h1 {
     font-weight: 600;
     font-size: 18px;
+    line-height: 1.2em;
     padding-bottom: 8px;
+    float: left;
+    span {
+        color:#4bc6df;
+    }
 }
 
 h2 {
     font-weight: 600;
     font-size: 24px;
     padding: 8px 0 8px 0;
-    color: #4bc6df;
+    color: #333;
     display: block;
      @include mq(mobileLandscape){
            padding-left: 112px;
       } 
     
+}
+
+h3 {
+    font-family: Guardian Text Sans Web, Arial,sans-serif;
+    font-weight: 500;
+    float: right;
+    font-size: 14px; 
 }
 
 }
