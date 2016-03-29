@@ -96,12 +96,12 @@ for (var d in dataset) {
     
      if ( graphObject !== null ) {
            graphs.push( graphObject );
-           graphHTML = '<div class="country-graph" id="graph-' + graphObject.id + '"></div>';
+           graphHTML = '<div class="country-graph" id="graph-' + graphObject.id + '"><h5 class="graph-title">Weekly migrant arrivals</h5><div class="graph-inner"></div><div class="graph-readout"></div></div>';
      }
      
      
     bulletsHTML+= "</ul>";
-    html += '<div class="country-graphics">' + imageHTML + graphHTML + '</div>'  + mapHTML + countryName + bulletsHTML + "</div>";
+    html += mapHTML + countryName + '<div class="country-graphics">' + imageHTML + graphHTML + '</div>' + bulletsHTML + "</div>";
 }
     
    
@@ -130,15 +130,23 @@ function buildGraphs( graphData ) {
 
 function buildGraph ( graphData ) {
     
-var margin = {top: 20, right: 20, bottom: 30, left: 50},
-    width = 960 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    
+//var margin = {top: 20, right: 20, bottom: 30, left: 50}
 
 //var parseDate = d3.time.format("%d-%b-%y").parse;
 
 var data = graphData.data;
+var el ='#graph-' + graphData.id + ' .graph-inner';
+var parentEl ='#graph-' + graphData.id;
 
+var wP = 100;
+var wH = $(el).innerHeight() / $(el).innerWidth() * 100;
 
+var margin = {top: 0, right: 0, bottom: 0, left: 0},
+    // width = $(el).outerWidth() - margin.left - margin.right,
+    // height = $(el).outerHeight() - margin.top - margin.bottom;
+    width = wP - margin.left - margin.right,
+    height = wH - margin.top - margin.bottom;
 
 // var x = d3.time.scale()
 //     .range([0, width]);
@@ -157,14 +165,23 @@ var y = d3.scale.linear()
 //     .scale(y)
 //     .orient("left");
 
+// y.domain(d3.extent(data, function(d) { return d.close; }));
+
 var area = d3.svg.area()
     .x(function(d) { return x(d.date); })
     .y0(height)
     .y1(function(d) { return y(d.value); });
 
-var svg = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+var line = d3.svg.line()
+    .x(function(d) { return x(d.date); })
+    .y(function(d) { return y(d.value); });
+
+var svg = d3.select(el).append("svg")
+    .attr("version", "1.2")
+    .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom))
+    .attr("preserveAspectRatio", "xMinYMin meet")
+    //.attr("width", width + margin.left + margin.right)
+    //.attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -180,7 +197,37 @@ var svg = d3.select("body").append("svg")
   svg.append("path")
       .datum(data)
       .attr("class", "area")
-      .attr("d", area);
+      .attr("d", area)
+      
+      .on("mousemove", mMove)
+    //.append("title");
+
+function mMove(){
+
+     var m = d3.mouse(this);
+     
+     updateReadout( data, el, m[0], y, width, height, parentEl );
+     
+     //d3.select(this).select("title").text(m[0]);
+}
+      
+  svg.append("path")
+      .datum(data)
+      .attr("class", "line")
+      .attr("d", line);
+      
+      
+var lineMarker = d3.select(el).append("div")
+.attr("class", "line-marker");
+
+var cursor = d3.select(el).append("div")
+.attr("class", "circle-marker");
+
+updateReadout( data, el, 100, y, width, height, parentEl )
+
+                                        // **********
+
+
 
 //   svg.append("g")
 //       .attr("class", "x axis")
@@ -198,6 +245,26 @@ var svg = d3.select("body").append("svg")
 //       .text("Price ($)");
 
     
+}
+
+function updateReadout( data, el, mX, scaleY, w, h, parent ) {
+    
+    var index = Math.round(mX / 100 * data.length );
+    if ( index < 0 ) {
+        index = 0;
+    }
+    
+    if ( index > data.length-1 ) {
+        index = data.length-1;
+    }
+    
+    var oneDay = 100 / (data.length-1);
+    var x = index * oneDay;
+   var y = (h - scaleY(data[index].value)) / h * 100;
+    
+    $(el).find(".circle-marker").css("left", x + "%").css("bottom", y + "%");
+    $(el).find(".line-marker").css("left", x + "%").css("height", y + "%");
+    $(parent).find(".graph-readout").html(data[index].value);
 }
 
 function addListeners() {
