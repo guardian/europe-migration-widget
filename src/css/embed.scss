@@ -4,6 +4,7 @@
 
 html,
 body {
+    -webkit-font-smoothing: antialiased;
     @include fs-bodyCopy(2);
     color: #333;
     margin: 0;
@@ -103,7 +104,7 @@ border-color: #005689;
           width: 30%;
           position: absolute;
         height: 100%;
-        top: 0;
+        top: 12px;
         right: 0;
        }
     }
@@ -133,7 +134,7 @@ border-color: #005689;
         width: calc(100%-18px);
         margin-left:12px;
         margin-right:6px;
-        margin-top:12px;
+        margin-top:0;
         }
     }
     
@@ -142,6 +143,7 @@ border-color: #005689;
         width: 100%;
         padding-bottom: 20%;
         background: #fff;
+        border-bottom: 1px solid #4bc6df;
         vertical-align: top;
         @include mq(mobileLandscape){
          padding-bottom: 50%;   
@@ -185,7 +187,7 @@ border-color: #005689;
     .country-graph .line-marker {
         position: absolute;
         left: 100%;
-        bottom: 0;
+        bottom: -1px;
         height: 60px;
         border-left: 2px dotted #767676;
         margin-left: -1px;
@@ -204,12 +206,17 @@ border-color: #005689;
     .country-graph .graph-title {
         position: relative;
         text-align: left;
-         font-family: Guardian Text Sans Web, Arial,sans-serif;
-       
+        font-family: "Guardian Egyptian Web", Georgia, Serif;
+    font-family: Guardian Sans Web,Arial,sans-serif;
                 font-weight: 500;      
-                font-size: 13px;
-                color: #4bc6df;
-                padding-bottom: 12px;
+                font-size: 14px;
+                color: #000;
+                padding: 4px 0 12px 0;
+                font-weight: 500;
+                
+                span {
+                    
+                }
     }
     
     ul {
@@ -232,6 +239,7 @@ li:before {
     
     .country-bullets-list {
        display: block;
+       padding-top: 12px;
     }
    
     .country-bullet {
@@ -244,7 +252,7 @@ li:before {
         font-weight: 500;
         // list-style-type: disc;
         color: #767676;
-        width: 80%;
+        width: 90%;
          @include mq(mobileLandscape){
            margin-left: 112px;
            width: 45%;
@@ -265,7 +273,8 @@ h1 {
     padding-bottom: 12px;
     float: left;
     span {
-        color:#4bc6df;
+        // color:#4bc6df;
+        font-weight: 200;
     }
 }
 
