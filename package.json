@@ -28,7 +28,8 @@
       "jquery": "npm:jquery@^2.2.1",
       "json": "github:systemjs/plugin-json@^0.1.0",
       "reqwest": "github:ded/reqwest@^1.1.5",
-      "text": "github:systemjs/plugin-text@^0.0.2"
+      "text": "github:systemjs/plugin-text@^0.0.2",
+      "topojson": "npm:topojson@^1.6.24"
     },
     "devDependencies": {
       "traceur": "github:jmcriffey/bower-traceur@0.0.91",

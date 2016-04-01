@@ -2,6 +2,8 @@ import iframeMessenger from 'guardian/iframe-messenger'
 import reqwest from 'reqwest'
 import $ from 'jquery'
 import d3 from 'd3'
+import topojson from 'topojson'
+import europeJSON from './data/europe.json!json'
 import embedHTML from './text/embed.html!text'
 
 var dataset = null;
@@ -242,6 +244,8 @@ var cursor = d3.select(el).append("div")
 
 updateReadout( data, el, 100, y, width, height, parentEl )
 
+buildMap ( graphData.id );
+
                                         // **********
 
 
@@ -303,6 +307,38 @@ function addListeners() {
     $(".country-block").hide();
     $("#country-block_" + selected).show();
 });
+}
+
+function buildMap ( id ) {
+    var center, countries, height, path, projection, scale, svg, width;
+  width = 300;
+  height = 300;
+  center = [0, 65];
+  scale = 600;
+  projection = d3.geo.mercator().scale(scale).translate([width / 2, 0]).center(center);
+  path = d3.geo.path().projection(projection);
+  svg = d3.select("#country-block_" + id + " .country-locator-map").append("svg")
+  .attr("version", "1.2")
+  .attr("viewBox", "0 0 600 600")
+  .attr("preserveAspectRatio", "xMinYMin meet");
+//   .attr("height", height)
+//   .attr("width", width);
+  countries = svg.append("g");
+  //d3.json(europeJSON, function(data) {
+      console.log(europeJSON);
+      var data = europeJSON;
+      console.log(data.objects)
+    countries.selectAll('.country')
+    .data(topojson.feature(data, data.objects.europe).features)
+    .enter()
+    .append('path')
+    .attr('class', 'country')
+    .attr('id', function (d) {
+        return d.id;
+    })
+    .attr('d', path);
+    return;
+  //});
 }
 
 function getParameter(paramName) {
