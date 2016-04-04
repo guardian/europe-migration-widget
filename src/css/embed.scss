@@ -61,23 +61,37 @@ time, mark, audio, video {
          border-top: 1px solid #eaeaea;
          border-bottom: 1px solid #eaeaea;
          
+         &.no-button {
+             border-top: none;
+         }
+         
          .toggle-button {
              font-family: Guardian Text Sans Web, Arial,sans-serif;
              display: inline-block;
                 font-weight: 500;      
                 font-size: 13px;
-                color: #fff;
+                color: #767676;
                 // background: #4bc6df;
                 padding: 2px 12px 2px 5px;
                 border-radius: 15px;
                 cursor: pointer;
                 
                 
-background-color: #005689;
-border-color: #005689;
+background-color: #f1f1f1;
+border-color: #f1f1f1;
+
+&:hover {
+    background-color: #767676;
+border-color: #767676;
+ color: #f1f1f1;
+ .inline-icon {
+    fill: #f1f1f1;
+    
+}
+}
                 
                 .inline-icon {
-    fill: #ffffff;
+    fill: #767676;
     width: 10px;
 }
 .button-text {
@@ -101,12 +115,22 @@ border-color: #005689;
         // background: #eaeaea;
          @include mq(mobileLandscape){
           border-left: 1px solid #eaeaea;
-          width: 30%;
+          width: 42%;
           position: absolute;
         height: 100%;
         top: 12px;
         right: 0;
        }
+       
+        @include mq(phablet){
+          border-left: 1px solid #eaeaea;
+          width: 35%;
+          position: absolute;
+        height: 100%;
+        top: 12px;
+        right: 0;
+       }
+       
     }
     
      .country-graphics:after {
@@ -116,14 +140,25 @@ border-color: #005689;
     }
      
     .country-locator-map {
-        background: #dcdcdc;
+        background: #717e85;
         display: none;
-         @include mq(mobileLandscape){
+         @include mq(phablet){
            display: block;
-            width: 100px;
-            height: 100px;
+            width: 110px;
+            height: 110px;
             position: absolute;
-      } 
+      }
+      
+       svg {
+           fill: #e5e9ec;
+           stroke: #e5e9ec;
+           stroke-width: 3px;
+           
+           .country.highlighted {
+               fill: #4bc6df;
+               stroke: #4bc6df;
+           }
+       } 
     }
     
     .country-graph {
@@ -143,11 +178,24 @@ border-color: #005689;
         width: 100%;
         padding-bottom: 20%;
         background: #fff;
-        border-bottom: 1px solid #4bc6df;
+        // border-bottom: 1px solid #4bc6df;
         vertical-align: top;
-        @include mq(mobileLandscape){
-         padding-bottom: 50%;   
+        
+        &.wide-view {
+            padding-bottom: 40%;
+            display: none;
         }
+        @include mq(mobileLandscape){
+        //  padding-bottom: 50%;
+         display: none;
+          &.wide-view {
+           
+            display: block;
+        }
+       }
+       
+      
+        
     }
     
     
@@ -182,25 +230,34 @@ border-color: #005689;
         background: #4bc6df;
         margin-left: -5px;
         margin-bottom: -5px;
+        &.circle-other {
+            background: #bcbcbc;
+        }
     }
     
     .country-graph .line-marker {
         position: absolute;
         left: 100%;
-        bottom: -1px;
-        height: 60px;
-        border-left: 2px dotted #767676;
+        top: -10px;
+        border-left: 1px dotted #4bc6df;
         margin-left: -1px;
+        padding-bottom: 10px;
     }
     
     .country-graph .graph-readout {
-        position: relative;
+        position: absolute;
         text-align: right;
         font-family: "Guardian Egyptian Web", Georgia, Serif;
-        font-size: 20px;
-        padding-top: 4px;
+        font-size: 30px;
+        top: 2px;
+        right: 0;
+        // padding-top: 4px;
         margin-right: -2px;
         color: #4bc6df;
+         &.readout-other {
+            color: #bcbcbc;
+        }
+       
     }
     
     .country-graph .graph-title {
@@ -209,13 +266,14 @@ border-color: #005689;
         font-family: "Guardian Egyptian Web", Georgia, Serif;
     font-family: Guardian Sans Web,Arial,sans-serif;
                 font-weight: 500;      
-                font-size: 14px;
-                color: #000;
+                font-size: 13.5px;
+                line-height:1.1;
+                color: #333;
                 padding: 4px 0 12px 0;
                 font-weight: 500;
                 
-                span {
-                    
+                strong {
+                    color: #333;
                 }
     }
     
@@ -254,8 +312,12 @@ li:before {
         color: #767676;
         width: 90%;
          @include mq(mobileLandscape){
-           margin-left: 112px;
-           width: 45%;
+          
+           width: 50%;
+      } 
+       @include mq(phablet){
+           margin-left: 132px;
+           width: 40%;
       } 
     }
     
@@ -284,8 +346,8 @@ h2 {
     padding: 8px 0 8px 0;
     color: #333;
     display: block;
-     @include mq(mobileLandscape){
-           padding-left: 112px;
+     @include mq(phablet){
+           padding-left: 132px;
       } 
     
 }

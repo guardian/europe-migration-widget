@@ -16,6 +16,11 @@ window.init = function init(el, config) {
     selected = getParameter("country");
 
     el.innerHTML = embedHTML;
+    
+    if (selected == null) {
+        $(".toggle-button").hide();
+         $(".widget-footer").addClass("no-button");
+    }
 
     reqwest({
         url: 'https://interactive.guim.co.uk/docsdata/1bRz4W9fo4IFrdwq8gj44H77tdZtvyJ9k_LJt614scpg.json',
@@ -42,10 +47,10 @@ function buildView ( ) {
     
      
      
-     var i, countryData, countryName, html, bulletsHTML, tabsHTML, mapHTML, imageHTML, graphHTML, dataType, graphs = [], graphObject, graphTitle, bulletsTitle;
+     var i, countryData, countryName, html, bulletsHTML, tabsHTML, mapHTML, imageHTML, graphHTML, dataType, graphs = [], graphObject, graphTitle, bulletsTitle, countryCode;
      
      html = "";
-     tabsHTML = "<option selected disabled>Select country</option>";
+     tabsHTML = "<option selected disabled>Select a country</option>";
      
 
 for (var d in dataset) {
@@ -59,6 +64,7 @@ for (var d in dataset) {
    graphObject = null;
    graphTitle = "";
    bulletsTitle = "";
+   countryCode = null;
 
  for ( i = 0; i < countryData.length; i++ ) {
         
@@ -82,6 +88,7 @@ for (var d in dataset) {
                     graphObject = {};
                     graphObject.id = d;
                     graphObject.data = [];
+                    graphObject.countryCode = countryCode;
                 }
                 graphObject.data.push( { value: countryData[i]["Value"], date: countryData[i]["Date"] });
            break;
@@ -92,6 +99,10 @@ for (var d in dataset) {
            
            case "bullets title" :
                 bulletsTitle = '<h5 class="graph-title">' + countryData[i]["Value"] + '</h5>';
+           break;
+           
+            case "countrycode" :
+                countryCode = countryData[i]["Value"];
            break;
            
            case "locator map" :
@@ -109,7 +120,7 @@ for (var d in dataset) {
     
      if ( graphObject !== null ) {
            graphs.push( graphObject );
-           graphHTML = '<div class="country-graph" id="graph-' + graphObject.id + '"><h5 class="graph-title">' + graphTitle + '<span></span></h5><div class="graph-inner"></div><div class="graph-readout"></div></div>';
+           graphHTML = '<div class="country-graph" id="graph-' + graphObject.id + '"><div class="graph-readout"></div><h5 class="graph-title">' + graphTitle + '<span></span></h5><div class="graph-inner narrow-view"></div><div class="graph-inner wide-view"></div></div>';
      }
      
     bulletsHTML= bulletsTitle + bulletsHTML;
@@ -133,15 +144,19 @@ for (var d in dataset) {
 
 function buildGraphs( graphData ) {
     
-    var i;
+    var i, el;
     
     for ( i = 0; i < graphData.length; i++ ) {
-        buildGraph ( graphData[i] );
+        el ='#graph-' + graphData[i].id + ' .graph-inner.narrow-view';
+        buildGraph ( graphData[i], el );
+        el ='#graph-' + graphData[i].id + ' .graph-inner.wide-view';
+        buildGraph ( graphData[i], el );
+        buildMap ( graphData[i].id, graphData[i].countryCode );
     }
     
 }
 
-function buildGraph ( graphData ) {
+function buildGraph ( graphData, el ) {
     
     
 //var margin = {top: 20, right: 20, bottom: 30, left: 50}
@@ -149,7 +164,7 @@ function buildGraph ( graphData ) {
 //var parseDate = d3.time.format("%d-%b-%y").parse;
 
 var data = graphData.data;
-var el ='#graph-' + graphData.id + ' .graph-inner';
+
 var parentEl ='#graph-' + graphData.id;
 
 
@@ -219,6 +234,7 @@ var svg = d3.select(el).append("svg")
       .attr("d", area)
       
       .on("mousemove", mMove)
+      .on("mouseleave", mLeave)
     //.append("title");
 
 function mMove(){
@@ -226,6 +242,14 @@ function mMove(){
      var m = d3.mouse(this);
      
      updateReadout( data, el, m[0], y, width, height, parentEl );
+     
+     //d3.select(this).select("title").text(m[0]);
+}
+
+function mLeave(){
+
+     
+     updateReadout( data, el, 100, y, width, height, parentEl );
      
      //d3.select(this).select("title").text(m[0]);
 }
@@ -240,13 +264,12 @@ var lineMarker = d3.select(el).append("div")
 .attr("class", "line-marker");
 
 var cursor = d3.select(el).append("div")
-.attr("class", "circle-marker");
+.attr("class", "circle-marker circle-other");
+
+var endCursor = d3.select(el).append("div")
+.attr("class", "circle-marker circle-end");
 
 updateReadout( data, el, 100, y, width, height, parentEl )
-
-buildMap ( graphData.id );
-
-                                        // **********
 
 
 
@@ -281,23 +304,38 @@ function updateReadout( data, el, mX, scaleY, w, h, parent ) {
     
     var oneDay = 100 / (data.length-1);
     var x = index * oneDay;
-   var y = (h - scaleY(data[index].value)) / (h+1) * 100; // h+1 to accout for border;
+   var y = (h - scaleY(data[index].value)) / (h) * 100; // h+1 to accout for border;
     
-    $(el).find(".circle-marker").css("left", x + "%").css("bottom", y + "%");
-    $(el).find(".line-marker").css("left", x + "%").css("height", y + "%");
-    $(parent).find(".graph-readout").html(addCommas(data[index].value));
+    $(el).find(".circle-other").css("left", x + "%").css("bottom", y + "%");
+    y = (h - scaleY(data[data.length-1].value)) / (h) * 100; // h+1 to accout for border;
+    $(el).find(".circle-end").css("left", "100%").css("bottom", y + "%");
+    y = 100-y;
+    var $lineMarker = $(el).find(".line-marker").css("left", "100%").css("height", y + "%");
+    var $readout = $(parent).find(".graph-readout").html(addCommas(data[index].value));
+    
+    if (index == data.length-1) {
+        $readout.removeClass("readout-other");
+        $lineMarker.show();
+    } else {
+        $readout.addClass("readout-other");
+        $lineMarker.hide();
+    }
     $(parent).find(".graph-title span").html(", " + String(data[index].date).toLowerCase());
 }
 
 function addListeners() {
-    $(".toggle-button").click( function (e) {
+    $(".toggle-button").on( "click", function (e) {
+  
         if (!expanded) {
         $(".country-block").show();
-        $(".toggle-button .button-text").html("Show less");
+        $(".toggle-button").hide();
+        $(".widget-footer").addClass("no-button");
         expanded = true;
+        $('#country-select').prop('selectedIndex',0);
         } else {
          expanded = false;
          $(".country-block").hide();
+         $("#country-block_" + selected).show(); 
         $(".toggle-button .button-text").html("Show more countries");   
         }
     });
@@ -306,10 +344,13 @@ function addListeners() {
         selected = $(this).val();
     $(".country-block").hide();
     $("#country-block_" + selected).show();
+     $(".toggle-button").show();
+     $(".widget-footer").removeClass("no-button");
+     expanded = false;
 });
 }
 
-function buildMap ( id ) {
+function buildMap ( id, countryCode ) {
     var center, countries, height, path, projection, scale, svg, width;
   width = 300;
   height = 300;
@@ -332,7 +373,15 @@ function buildMap ( id ) {
     .data(topojson.feature(data, data.objects.europe).features)
     .enter()
     .append('path')
-    .attr('class', 'country')
+    .attr('class', function(d) {
+        
+        if (d.id == countryCode) {
+            return "country highlighted";
+        } else {
+            return "country";
+        }
+        
+    })
     .attr('id', function (d) {
         return d.id;
     })
