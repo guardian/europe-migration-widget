@@ -33,6 +33,7 @@ time, mark, audio, video {
   vertical-align: baseline;
   line-height: 1em;
 }
+select:focus {outline:0 !important;}
 }
 
 #widget-container {
@@ -40,10 +41,78 @@ time, mark, audio, video {
     border-top: 1px solid #4bc6df;
     padding: 12px 0 12px 0;
     
-    #country-select {
-        clear: both;
-        float: right;   
+  .filter {
+      clear: both;
+        float: right;
+      position: relative;
+      margin: 20px 0 0 0;
+        line-height: 20px;
+width: auto;
+height: 12px;
+padding: 0 22px 0 0;
+vertical-align: top;
+box-sizing: border-box;
+font-family: Guardian Text Sans Web, Arial,sans-serif;
+font-size: 14px;
+font-weight: 700;
+cursor: pointer;
+
+&:hover .label {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+.filter-inner {
+    // border-bottom: #ccc solid 1px;
+    width: 100%;
+height: 100%;
+position: relative;
+}
+
+.label {
+ 
+box-sizing: border-box;
+margin: 0;
+color: #adadad;
+padding: 0 0 0 .2em;
+
+display: block;
+
+
+}
+
+.arrow {
+    position: absolute;
+right: -16px;
+top: 3px;
+width: 10px;
+height: 10px;
+background-image: url("/assets/imgs/down-arrow.svg");
+background-repeat: no-repeat;
+background-position: center;
+background-size: 100%;
+box-sizing: border-box;
+}
+
     }
+    
+    #country-select {
+        
+        z-index: 1;
+        opacity: 0;
+        color: #333;
+        border: 0;
+        outline: 0;
+        position: absolute;
+top: 0;
+right: -16px;
+width: calc(100%+16px);
+height: 100%;
+cursor: pointer;   
+    }
+    
+    
     
     .widget-header {
        padding-bottom: 12px;

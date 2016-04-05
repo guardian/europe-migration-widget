@@ -137,7 +137,11 @@ for (var d in dataset) {
    if ( selected !== null ) {
        $(".country-block").hide();
        $("#country-block_" + selected).show();
+       var selectedText = $("#country-select option[value='" + selected + "']").text();
+       $(".filter .label").html(selectedText);
        //$("select option[value='" + selected + "']").attr("selected","selected");
+   } else {
+        $(".filter .label").html("Select a country");
    }
 
 }
@@ -332,18 +336,22 @@ function addListeners() {
         $(".widget-footer").addClass("no-button");
         expanded = true;
         $('#country-select').prop('selectedIndex',0);
+        $(".filter .label").html("Select a country");
         } else {
          expanded = false;
          $(".country-block").hide();
-         $("#country-block_" + selected).show(); 
+         $("#country-block_" + selected).show();
+         $(".filter .label").html("All countries"); 
         $(".toggle-button .button-text").html("Show more countries");   
         }
     });
     
     $("#country-select").change(function() {
         selected = $(this).val();
+        var selectedText = $("#country-select option[value='" + selected + "']").text();
     $(".country-block").hide();
     $("#country-block_" + selected).show();
+    $(".filter .label").html(selectedText);
      $(".toggle-button").show();
      $(".widget-footer").removeClass("no-button");
      expanded = false;
