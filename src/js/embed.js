@@ -76,12 +76,12 @@ for (var d in dataset) {
        switch (dataType) {
            
            case "name" :
-            countryName = '<h2 class="country-name">' + countryData[i]["Value"] + '</h2>';
-            tabsHTML += '<option value="' + d + '">' + countryData[i]["Value"] + '</option>';
+            countryName = '<h2 class="country-name">' + countryData[i]["Value1"] + '</h2>';
+            tabsHTML += '<option value="' + d + '">' + countryData[i]["Value1"] + '</option>';
            break;
            
            case "bullet" :
-           bulletsHTML += '<li class="country-bullet">' + countryData[i]["Value"] + '</li>';
+           bulletsHTML += '<li class="country-bullet">' + countryData[i]["Value1"] + '</li>';
            break;
            
             case "graph" :
@@ -91,19 +91,19 @@ for (var d in dataset) {
                     graphObject.data = [];
                     graphObject.countryCode = countryCode;
                 }
-                graphObject.data.push( { value: countryData[i]["Value"], date: countryData[i]["Date"] });
+                graphObject.data.push( { value: countryData[i]["Value1"], date: countryData[i]["Value2"] });
            break;
            
             case "graph title" :
-                graphTitle = countryData[i]["Value"];
+                graphTitle = countryData[i]["Value1"];
            break;
            
            case "bullets title" :
-                bulletsTitle = '<h5 class="graph-title">' + countryData[i]["Value"] + '</h5>';
+                bulletsTitle = '<h5 class="graph-title">' + countryData[i]["Value1"] + '</h5>';
            break;
            
             case "countrycode" :
-                countryCode = countryData[i]["Value"];
+                countryCode = countryData[i]["Value1"];
            break;
            
            case "locator map" :
@@ -116,11 +116,12 @@ for (var d in dataset) {
            break;
            
            case "image" :
-                var arr = countryData[i]["Value"].split("\t");
-                var stem = arr[0];
-                var params = arr[1];
-               img = getOptimalImage( 500, stem, params ); 
-               imageHTML = '<div class="country-image"><img src="' + img + '" alt=""/></div>';
+                //var arr = countryData[i]["Value1"].split("\t");
+                var stem = countryData[i]["Value1"];
+                var params = countryData[i]["Value2"];
+               img = getOptimalImage( 500, stem, params );
+              
+              imageHTML = '<div class="country-image"><img src="' + img + '" alt=""/></div>';
            break;
        }
         

@@ -39,7 +39,7 @@ select:focus {outline:0 !important;}
 #widget-container {
     background: #fff;
     border-top: 1px solid #4bc6df;
-    padding: 12px 0 12px 0;
+    padding: 0 0 12px 0;
     
   .filter {
       clear: both;
@@ -114,7 +114,10 @@ cursor: pointer;
     
     
     .widget-header {
+        padding-top: 12px;
        padding-bottom: 12px;
+       background: #eaeaea;
+       margin-bottom: 5px;
     }
     
      .widget-header:after {
@@ -174,6 +177,10 @@ border-color: #767676;
         padding: 0;
         margin-bottom: 40px;
         overflow: hidden;
+        
+        &:first-of-type {
+            border-top: none;
+        }
      }
      
      .country-graphics {
@@ -208,18 +215,22 @@ border-color: #767676;
     }
      
     .country-locator-map {
-        background: #717e85;
+        background: #fff;
         display: none;
          @include mq(phablet){
            display: block;
             width: 110px;
             height: 110px;
             position: absolute;
+            overflow: hidden;
+            border-radius: 50%;
+            margin-top: 10px;
+            border: 1px dotted #e6e6e6;
       }
       
        svg {
-           fill: #e5e9ec;
-           stroke: #e5e9ec;
+           fill: #e6e6e6;
+           stroke: #e6e6e6;
            stroke-width: 3px;
            
            .country.highlighted {
@@ -430,6 +441,7 @@ h1 {
     font-size: 18px;
     line-height: 1.2em;
     padding-bottom: 12px;
+    padding-left: 5px;
     float: left;
     span {
         // color:#4bc6df;
