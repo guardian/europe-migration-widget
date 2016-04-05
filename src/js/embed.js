@@ -47,7 +47,7 @@ function buildView ( ) {
     
      
      
-     var i, countryData, countryName, html, bulletsHTML, tabsHTML, mapHTML, imageHTML, graphHTML, dataType, graphs = [], graphObject, graphTitle, bulletsTitle, countryCode;
+     var i, countryData, countryName, html, bulletsHTML, tabsHTML, mapHTML, imageHTML, graphHTML, dataType, graphs = [], maps = [], graphObject, mapObject, graphTitle, bulletsTitle, countryCode;
      
      html = "";
      tabsHTML = "<option selected disabled>Select a country</option>";
@@ -62,6 +62,7 @@ for (var d in dataset) {
    graphHTML = "";
    imageHTML = "";
    graphObject = null;
+   mapObject = null;
    graphTitle = "";
    bulletsTitle = "";
    countryCode = null;
@@ -106,11 +107,16 @@ for (var d in dataset) {
            break;
            
            case "locator map" :
-                mapHTML = '<div class="country-locator-map"></div>';
+               
+               
+                    mapObject = {};
+                    mapObject.id = d;
+                    mapObject.countryCode = countryCode;
+               
            break;
            
            case "image" :
-                imageHTML = '<div class="country-image"></div>';
+                imageHTML = '<div class="country-image">IMG here</div>';
            break;
        }
         
@@ -123,6 +129,11 @@ for (var d in dataset) {
            graphHTML = '<div class="country-graph" id="graph-' + graphObject.id + '"><div class="graph-readout"></div><h5 class="graph-title">' + graphTitle + '<span></span></h5><div class="graph-inner narrow-view"></div><div class="graph-inner wide-view"></div></div>';
      }
      
+     if ( mapObject !== null ) {
+           maps.push( mapObject );
+           mapHTML = '<div class="country-locator-map"></div>';
+     }
+     
     bulletsHTML= bulletsTitle + bulletsHTML;
     bulletsHTML+= "</ul>";
     html += mapHTML + countryName + '<div class="country-graphics">' + imageHTML + graphHTML + '</div>' + bulletsHTML + "</div>";
@@ -133,6 +144,7 @@ for (var d in dataset) {
    $(".countries-container").html(html);
    
    buildGraphs( graphs );
+   buildMaps( maps );
    
    if ( selected !== null ) {
        $(".country-block").hide();
@@ -155,7 +167,16 @@ function buildGraphs( graphData ) {
         buildGraph ( graphData[i], el );
         el ='#graph-' + graphData[i].id + ' .graph-inner.wide-view';
         buildGraph ( graphData[i], el );
-        buildMap ( graphData[i].id, graphData[i].countryCode );
+    }
+    
+}
+
+function buildMaps( mapData ) {
+   
+    var i, el;
+    
+    for ( i = 0; i < mapData.length; i++ ) {
+        buildMap ( mapData[i].id, mapData[i].countryCode );
     }
     
 }
