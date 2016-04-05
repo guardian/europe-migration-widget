@@ -250,7 +250,7 @@ border-color: #767676;
         vertical-align: top;
         
         &.wide-view {
-            padding-bottom: 40%;
+            padding-bottom: 38%;
             display: none;
         }
         @include mq(mobileLandscape){
@@ -343,6 +343,35 @@ border-color: #767676;
                 strong {
                     color: #333;
                 }
+    }
+    
+    .country-image {
+        position: relative;
+        background: #dbf4f9;
+        height: 120px;
+        overflow: hidden;
+         @include mq(mobileLandscape){
+          height: 0;
+          padding-bottom: 56%;
+          margin-left: 12px;
+      } 
+        
+        img {
+        position: absolute;
+    width: 100%;
+        vertical-align: top;
+        opacity: 0.5;
+        filter: grayscale(100%); /* Standard CSS */
+    -webkit-filter: grayscale(100%); /* CSS for Webkit Browsers */
+    filter: url(/elements/grayscale.svg#desaturate); /* Firefox 4-34 */
+    filter: gray;  /* Internet Explorer IE6-9 */
+    -webkit-filter: grayscale(1); /* Old WebKit Browsers */
+    margin: auto;
+    left: -1000%;
+    right: -1000%;
+    top: -1000%;
+    bottom: -1000%;
+        }
     }
     
     ul {

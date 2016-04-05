@@ -47,7 +47,7 @@ function buildView ( ) {
     
      
      
-     var i, countryData, countryName, html, bulletsHTML, tabsHTML, mapHTML, imageHTML, graphHTML, dataType, graphs = [], maps = [], graphObject, mapObject, graphTitle, bulletsTitle, countryCode;
+     var i, countryData, countryName, html, bulletsHTML, tabsHTML, mapHTML, imageHTML, img, graphHTML, dataType, graphs = [], maps = [], graphObject, mapObject, graphTitle, bulletsTitle, countryCode;
      
      html = "";
      tabsHTML = "<option selected disabled>Select a country</option>";
@@ -116,7 +116,11 @@ for (var d in dataset) {
            break;
            
            case "image" :
-                imageHTML = '<div class="country-image">IMG here</div>';
+                var arr = countryData[i]["Value"].split("\t");
+                var stem = arr[0];
+                var params = arr[1];
+               img = getOptimalImage( 500, stem, params ); 
+               imageHTML = '<div class="country-image"><img src="' + img + '" alt=""/></div>';
            break;
        }
         
@@ -156,6 +160,67 @@ for (var d in dataset) {
         $(".filter .label").html("Select a country");
    }
 
+}
+
+function getOptimalImage( elW, stem, params ) {
+    
+        var sizeStr = "", imgSize; //, elW = $el.width();
+    
+        var attr = getImageAttributes( params );
+        
+         if (attr["size"] != undefined ) {
+        var  imgSizes = attr["size"];
+    
+       
+        
+        //var windowWidth = $(window).width();
+        
+       // if(windowWidth <= 500){
+				//load smallest image to fit small screen
+				//imgSize = imgSizes[1];
+			//} else if( windowWidth <= 1050 ) {
+				//load medium image to fit vertical iPad layout 
+				//imgSize = imgSizes[1];
+			//} else {
+				//load determine image to load by size of position for desktop layout
+				var elWidth = elW;
+				if((elWidth <= (parseInt(imgSizes[0]) + 40)) ) {
+					imgSize = imgSizes[0];
+                    
+				} else if (elW <= parseInt(imgSizes[1]) || imgSizes.length <= 2 ) {
+					imgSize = imgSizes[1];
+          
+				} else {
+					imgSize = imgSizes[2];
+				}
+			//};
+
+       sizeStr += "/" + imgSize + ".jpg";
+       
+         }
+       
+       return stem + sizeStr;
+}
+
+function getImageAttributes( attr ) {
+    
+    var i, ii, arr, arr, key, values, obj = {}; //obj = { cropRatio: [500, 500], size: [ 140, 140, 140 ] };
+    
+    attr = attr.split("&");
+    
+    if (attr.length > 1) {
+    
+    for ( i = 0; i < attr.length; i++ ) {
+        arr = attr[i].split("=");       
+        key = arr[0];
+        values = arr[1].split(",");
+        obj[key] = values;      
+    }
+    
+    }
+     
+    return obj;
+    
 }
 
 function buildGraphs( graphData ) {
