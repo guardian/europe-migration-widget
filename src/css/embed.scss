@@ -366,10 +366,11 @@ border-color: #767676;
     }
     
     .country-image-inner  {
-        position: realative;
+        // position: relative;
         overflow: hidden;
         
         border-right: 1px solid #ffffff;
+        border-top: 1px solid #ffffff;
     }
     
     .country-image {
@@ -378,7 +379,9 @@ border-color: #767676;
         height: 94px;
         width: calc(100% - 120px);
         overflow: hidden;
-        
+        @include mq(mobileLandscape) {
+          width: calc(100% - 140px);
+      } 
        
        
       
