@@ -121,7 +121,7 @@ for (var d in dataset) {
                 var params = countryData[i]["Value2"];
                img = getOptimalImage( 500, stem, params );
               
-              imageHTML = '<div class="country-image"><img src="' + img + '" alt=""/></div>';
+              imageHTML = '<div class="country-image"><div class="country-image-inner"><img src="' + img + '" alt=""/><div class="tint"></div><div class="fade"></div></div></div>';
            break;
        }
         
@@ -307,7 +307,8 @@ var line = d3.svg.line()
 var svg = d3.select(el).append("svg")
     .attr("version", "1.2")
     .attr("viewBox", "0 0 " + (width + margin.left + margin.right) + " " + (height + margin.top + margin.bottom))
-    .attr("preserveAspectRatio", "xMinYMin meet")
+    .attr("preserveAspectRatio", "none")
+    //.attr("preserveAspectRatio", "xMinYMin meet")
     //.attr("width", width + margin.left + margin.right)
     //.attr("height", height + margin.top + margin.bottom)
   .append("g")
