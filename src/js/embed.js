@@ -449,8 +449,8 @@ function buildMap ( id, countryCode ) {
     var center, countries, height, path, projection, scale, svg, width;
   width = 300;
   height = 300;
-  center = [0, 65];
-  scale = 600;
+  center = [16, 53];
+  scale = 1000;
   projection = d3.geo.mercator().scale(scale).translate([width / 2, 0]).center(center);
   path = d3.geo.path().projection(projection);
   svg = d3.select("#country-block_" + id + " .country-locator-map").append("svg")
