@@ -16,7 +16,7 @@ window.init = function init(el, config) {
     selected = getParameter("country");
 
     el.innerHTML = embedHTML;
-    
+    $(".toggle-button").hide();
     if (selected == null) {
         $(".toggle-button").hide();
          $(".widget-footer").addClass("no-button");
@@ -121,7 +121,7 @@ for (var d in dataset) {
                 var params = countryData[i]["Value2"];
                img = getOptimalImage( 500, stem, params );
               
-              imageHTML = '<div class="country-image"><div class="country-image-inner"><img src="' + img + '" alt=""/><div class="tint"></div><div class="fade"></div></div></div>';
+              imageHTML = '<div class="country-image"><div class="country-image-inner"><img src="' + img + '" alt=""/><div class="fade"></div><div class="tint"></div></div></div>';
            break;
        }
         
