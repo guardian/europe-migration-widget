@@ -33,7 +33,7 @@ time, mark, audio, video {
   vertical-align: baseline;
   line-height: 1em;
 }
-select:focus {outline:0 !important;}
+select:focus, button:focus {outline:0 !important;}
 }
 
 .defs-only {
@@ -85,9 +85,7 @@ box-sizing: border-box;
 margin: 0;
 color: #adadad;
 padding: 0 0 0 .2em;
-
 display: block;
-
 
 }
 
@@ -184,7 +182,7 @@ border-color: #767676;
         position: relative;
         border-top: 1px solid #eaeaea;
         padding: 0;
-        margin-bottom: 40px;
+        margin-bottom: 30px;
         overflow: hidden;
         
         &:first-of-type {
@@ -502,15 +500,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 }
 
 li { 
-    padding-left: 1em; 
-    
+   
 }
 
 li:before {
-    content: "• ";
+    content: "•";
     font-size: 40px;
     color: #4bc6df;
     vertical-align: bottom;
+    padding-right: 5px;
 }
     
     .country-bullets-list {
@@ -574,5 +572,36 @@ h3 {
     float: right;
     font-size: 14px; 
 }
+
+}
+
+.tab-buttons {
+    
+
+.tab-button {
+    display: inline-block;
+    box-sizing: border-box;
+    border-radius: 12px;
+    cursor: pointer;
+    color: #767676;
+    background-color: #eaeaea;
+    border-color: #eaeaea;
+    font-weight: 300;
+    font-family: "Guardian Text Sans Web","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+    border-radius: 62.5rem;
+    font-size: 13px;
+border-width: 0.0625rem;
+border-style: solid;
+margin: 12px 8px 0 0;
+padding: 5px 5px 5px 5px;
+
+&.highlighted {
+    color: #fff;
+    background-color: #4bc6df;
+    border-color: #4bc6df;
+}
+}
+
+
 
 }

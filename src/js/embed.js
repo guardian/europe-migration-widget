@@ -50,7 +50,8 @@ function buildView ( ) {
      var i, countryData, countryName, html, bulletsHTML, tabsHTML, mapHTML, imageHTML, img, graphHTML, dataType, graphs = [], maps = [], graphObject, mapObject, graphTitle, bulletsTitle, countryCode;
      
      html = "";
-     tabsHTML = "<option selected disabled>Select a country</option>";
+     //tabsHTML = "<option selected disabled>Select a country</option>";
+     tabsHTML = "";
      
 
 for (var d in dataset) {
@@ -77,7 +78,8 @@ for (var d in dataset) {
            
            case "name" :
             countryName = '<h2 class="country-name">' + countryData[i]["Value1"] + '</h2>';
-            tabsHTML += '<option value="' + d + '">' + countryData[i]["Value1"] + '</option>';
+            //tabsHTML += '<option value="' + d + '">' + countryData[i]["Value1"] + '</option>';
+            tabsHTML += '<button class="tab-button" id="tab-button-' + d + '">' + countryData[i]["Value1"] + '</button>';
            break;
            
            case "bullet" :
@@ -145,7 +147,8 @@ for (var d in dataset) {
 }
     
    
-   $("select").html(tabsHTML);
+   //$("select").html(tabsHTML);
+   $(".tab-buttons").html(tabsHTML);
    $(".countries-container").html(html);
    
    buildGraphs( graphs );
@@ -154,11 +157,13 @@ for (var d in dataset) {
    if ( selected !== null ) {
        $(".country-block").hide();
        $("#country-block_" + selected).show();
-       var selectedText = $("#country-select option[value='" + selected + "']").text();
-       $(".filter .label").html(selectedText);
+       //var selectedText = $("#country-select option[value='" + selected + "']").text();
+       //$(".filter .label").html(selectedText);
        //$("select option[value='" + selected + "']").attr("selected","selected");
+       $(".tab-button").removeClass("highlighted");
+       $("#tab-button-" + selected ).addClass("highlighted");
    } else {
-        $(".filter .label").html("Select a country");
+        //$(".filter .label").html("Select a country");
    }
 
 }
