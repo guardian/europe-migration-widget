@@ -188,6 +188,10 @@ border-color: #767676;
         &:first-of-type {
             border-top: none;
         }
+        
+        &.block-selected {
+            border-top: none;
+        }
      }
      
      .country-graphics {

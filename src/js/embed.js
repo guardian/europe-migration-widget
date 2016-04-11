@@ -19,7 +19,7 @@ window.init = function init(el, config) {
     $(".toggle-button").hide();
     if (selected == null) {
         $(".toggle-button").hide();
-         $(".widget-footer").addClass("no-button");
+         //$(".widget-footer").addClass("no-button");
     }
 
     reqwest({
@@ -79,7 +79,7 @@ for (var d in dataset) {
            case "name" :
             countryName = '<h2 class="country-name">' + countryData[i]["Value1"] + '</h2>';
             //tabsHTML += '<option value="' + d + '">' + countryData[i]["Value1"] + '</option>';
-            tabsHTML += '<button class="tab-button" id="tab-button-' + d + '">' + countryData[i]["Value1"] + '</button>';
+            tabsHTML += '<button class="tab-button" id="tab-button-' + d + '" data-name="' + d + '">' + countryData[i]["Value1"] + '</button>';
            break;
            
            case "bullet" :
@@ -155,8 +155,8 @@ for (var d in dataset) {
    buildMaps( maps );
    
    if ( selected !== null ) {
-       $(".country-block").hide();
-       $("#country-block_" + selected).show();
+       $(".country-block").hide().removeClass("block-selected");
+       $("#country-block_" + selected).show().addClass("block-selected");
        //var selectedText = $("#country-select option[value='" + selected + "']").text();
        //$(".filter .label").html(selectedText);
        //$("select option[value='" + selected + "']").attr("selected","selected");
@@ -421,34 +421,46 @@ function updateReadout( data, el, mX, scaleY, w, h, parent ) {
 }
 
 function addListeners() {
-    $(".toggle-button").on( "click", function (e) {
+    // $(".toggle-button").on( "click", function (e) {
   
-        if (!expanded) {
-        $(".country-block").show();
-        $(".toggle-button").hide();
-        $(".widget-footer").addClass("no-button");
-        expanded = true;
-        $('#country-select').prop('selectedIndex',0);
-        $(".filter .label").html("Select a country");
-        } else {
-         expanded = false;
-         $(".country-block").hide();
-         $("#country-block_" + selected).show();
-         $(".filter .label").html("All countries"); 
-        $(".toggle-button .button-text").html("Show more countries");   
-        }
+    //     if (!expanded) {
+    //     $(".country-block").show();
+    //     $(".toggle-button").hide();
+    //     $(".widget-footer").addClass("no-button");
+    //     expanded = true;
+    //     $('#country-select').prop('selectedIndex',0);
+    //     $(".filter .label").html("Select a country");
+    //     } else {
+    //      expanded = false;
+    //      $(".country-block").hide();
+    //      $("#country-block_" + selected).show();
+    //      $(".filter .label").html("All countries"); 
+    //     $(".toggle-button .button-text").html("Show more countries");   
+    //     }
+    // });
+    
+    $(".tab-button").on( "click", function (e) {
+  
+        var $this = $(this);
+        $(".country-block").removeClass("block-selected").hide();
+        $(".tab-button").removeClass("highlighted");
+        $this.addClass("highlighted");
+        selected = $(this).data("name");
+        $("#country-block_" + selected).show().addClass("block-selected");
+        
+       
     });
     
-    $("#country-select").change(function() {
-        selected = $(this).val();
-        var selectedText = $("#country-select option[value='" + selected + "']").text();
-    $(".country-block").hide();
-    $("#country-block_" + selected).show();
-    $(".filter .label").html(selectedText);
-     $(".toggle-button").show();
-     $(".widget-footer").removeClass("no-button");
-     expanded = false;
-});
+//     $("#country-select").change(function() {
+//         selected = $(this).val();
+//         var selectedText = $("#country-select option[value='" + selected + "']").text();
+//     $(".country-block").hide();
+//     $("#country-block_" + selected).show();
+//     $(".filter .label").html(selectedText);
+//      $(".toggle-button").show();
+//      $(".widget-footer").removeClass("no-button");
+//      expanded = false;
+// });
 }
 
 function buildMap ( id, countryCode ) {
