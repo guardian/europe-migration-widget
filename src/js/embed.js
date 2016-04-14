@@ -464,12 +464,12 @@ function addListeners() {
 }
 
 function buildMap ( id, countryCode ) {
-    var center, countries, height, path, projection, scale, svg, width;
+    var center, countries, height, path, projection, scale, svg, width, p, features;
   width = 300;
   height = 300;
   center = [16, 53];
   scale = 1000;
-  projection = d3.geo.mercator().scale(scale).translate([width / 2, 0]).center(center);
+  projection = d3.geo.mercator().scale(scale).translate([width, height]).center(center);
   path = d3.geo.path().projection(projection);
   svg = d3.select("#country-block_" + id + " .country-locator-map").append("svg")
   .attr("version", "1.2")
@@ -477,19 +477,23 @@ function buildMap ( id, countryCode ) {
   .attr("preserveAspectRatio", "xMinYMin meet");
 //   .attr("height", height)
 //   .attr("width", width);
+
   countries = svg.append("g");
   //d3.json(europeJSON, function(data) {
       console.log(europeJSON);
       var data = europeJSON;
       console.log(data.objects)
+      features = topojson.feature(data, data.objects.europe).features;
     countries.selectAll('.country')
-    .data(topojson.feature(data, data.objects.europe).features)
+    .data(features)
     .enter()
     .append('path')
-    .attr('class', function(d) {
+    .attr('class', function(d, i) {
         
         if (d.id == countryCode) {
-            return "country highlighted";
+             p = i;
+            return "country highlighted"; 
+            
         } else {
             return "country";
         }
@@ -499,6 +503,13 @@ function buildMap ( id, countryCode ) {
         return d.id;
     })
     .attr('d', path);
+   
+    var centroid = d3.geo.centroid(features[p]);
+     alert(centroid);
+     projection.center(centroid);
+     countries.selectAll('.country')
+      .attr("d", path);
+
     return;
   //});
 }
