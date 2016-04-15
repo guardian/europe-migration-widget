@@ -47,7 +47,7 @@ function buildView ( ) {
     
      
      
-     var i, countryData, countryName, html, bulletsHTML, tabsHTML, mapHTML, imageHTML, img, graphHTML, dataType, graphs = [], maps = [], graphObject, mapObject, graphTitle, bulletsTitle, countryCode;
+     var i, countryData, countryName, html, introHTML, bulletsHTML, tabsHTML, mapHTML, imageHTML, sourceHTML, updatedHTML,img, graphHTML, dataType, graphs = [], maps = [], graphObject, mapObject, graphTitle, bulletsTitle, countryCode;
      
      html = "";
      //tabsHTML = "<option selected disabled>Select a country</option>";
@@ -58,7 +58,8 @@ for (var d in dataset) {
     
    html += '<div id="country-block_' + d + '" class="country-block" >';
    countryData = dataset[d];
-   bulletsHTML = '<ul class="country-bullets-list">';
+   introHTML = "";
+   bulletsHTML = '<ul class="country-bullets-list right-col">';
    mapHTML = "";
    graphHTML = "";
    imageHTML = "";
@@ -77,7 +78,7 @@ for (var d in dataset) {
        switch (dataType) {
            
            case "name" :
-            countryName = '<h2 class="country-name">' + countryData[i]["Value1"] + '</h2>';
+            countryName = '<h2 class="country-name mid-col">' + countryData[i]["Value1"] + '</h2>';
             //tabsHTML += '<option value="' + d + '">' + countryData[i]["Value1"] + '</option>';
             tabsHTML += '<button class="tab-button" id="tab-button-' + d + '" data-name="' + d + '">' + countryData[i]["Value1"] + '</button>';
            break;
@@ -108,12 +109,18 @@ for (var d in dataset) {
                 countryCode = countryData[i]["Value1"];
            break;
            
-           case "locator map" :
+            case "source" :
+                sourceHTML = countryData[i]["Value1"];
+           break;
+           
+           case "updated" :
+                updatedHTML = countryData[i]["Value1"];
+           break;
+           
+           case "intro" :
                
-               
-                    mapObject = {};
-                    mapObject.id = d;
-                    mapObject.countryCode = countryCode;
+               introHTML  = "<h3 class='mid-col'>" + countryData[i]["Value1"] + "</h3>";
+                   
                
            break;
            
@@ -136,14 +143,16 @@ for (var d in dataset) {
            graphHTML = '<div class="country-graph" id="graph-' + graphObject.id + '"><div class="graph-readout"></div><h5 class="graph-title">' + graphTitle + '<span></span></h5><div class="graph-inner narrow-view"></div><div class="graph-inner wide-view"></div></div>';
      }
      
-     if ( mapObject !== null ) {
-           maps.push( mapObject );
-           mapHTML = '<div class="country-locator-map"></div>';
-     }
+      mapObject = {};
+      mapObject.id = d;
+      mapObject.countryCode = countryCode;
+      maps.push( mapObject );
+      mapHTML = '<div class="country-locator-map"></div>';
+    
      
     bulletsHTML= bulletsTitle + bulletsHTML;
     bulletsHTML+= "</ul>";
-    html += mapHTML + countryName + '<div class="country-graphics">' + imageHTML + graphHTML + '</div>' + bulletsHTML + "</div>";
+    html += mapHTML + countryName + '<div class="country-graphics">' + imageHTML + graphHTML + '</div>' + introHTML + bulletsHTML + '<div class="source-dummy" style="display:none;"><span>Source: ' + sourceHTML + '</span><span class="pipes"> | </span><span>Last update: ' + updatedHTML + '</span></div></div>';
 }
     
    
@@ -155,8 +164,7 @@ for (var d in dataset) {
    buildMaps( maps );
    
    if ( selected !== null ) {
-       $(".country-block").hide().removeClass("block-selected");
-       $("#country-block_" + selected).show().addClass("block-selected");
+       showCountry( selected );
        //var selectedText = $("#country-select option[value='" + selected + "']").text();
        //$(".filter .label").html(selectedText);
        //$("select option[value='" + selected + "']").attr("selected","selected");
@@ -440,13 +448,19 @@ function addListeners() {
     // });
     
     $(".tab-button").on( "click", function (e) {
-  
         var $this = $(this);
-        $(".country-block").removeClass("block-selected").hide();
+        selected = $this.data("name");
         $(".tab-button").removeClass("highlighted");
         $this.addClass("highlighted");
-        selected = $(this).data("name");
-        $("#country-block_" + selected).show().addClass("block-selected");
+        
+        showCountry( selected );
+  
+        // 
+        // $(".country-block").removeClass("block-selected").hide();
+        // $(".tab-button").removeClass("highlighted");
+        // $this.addClass("highlighted");
+        // selected = $(this).data("name");
+        // $("#country-block_" + selected).show().addClass("block-selected");
         
        
     });
@@ -505,10 +519,27 @@ function buildMap ( id, countryCode ) {
     .attr('d', path);
    
     var centroid = d3.geo.centroid(features[p]);
-     alert(centroid);
+     
      projection.center(centroid);
      countries.selectAll('.country')
       .attr("d", path);
+      
+      var blk = document.getElementById("country-block_" + id);
+      
+      
+      
+       var bbox = blk.querySelector("#" + countryCode).getBBox();
+      var rectangle = svg.append("rect")
+                         .attr("x", bbox.x - 30)
+                         .attr("y", bbox.y - 30)
+                           .attr("width", bbox.width + 60)
+                          .attr("height", bbox.height + 60)
+                          .attr("stroke", "#000")
+                          .attr("fill", "none")
+                          .attr("stroke-width", "10");
+                          
+    //div.text("x: " + bbox.x + ", y: " + bbox.y + ", h: " + bbox.height + ", w: " + bbox.width);
+
 
     return;
   //});
@@ -538,4 +569,14 @@ function addCommas(nStr) {
             x1 = x1.replace(rgx, '$1' + ',' + '$2');
     }
     return x1 + x2;
+}
+
+function showCountry( country ) {
+    
+    var $block = $("#country-block_" + country), sourceHTML;
+        
+        $(".country-block").removeClass("block-selected").hide();
+        $block.show().addClass("block-selected");
+        sourceHTML = $block.find(".source-dummy").html();
+        $(".widget-footer p").html(sourceHTML);
 }
