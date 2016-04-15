@@ -539,10 +539,10 @@ h2 {
 
 h3 {
     font-family: "Guardian Text Egyptian Web", Georgia, Serif;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 18px;
     color: #333; 
-    line-height: 1.25em;
+    line-height: 1.3em;
     padding-bottom: 12px;
     //width: calc(100% - 150px);
     
@@ -562,7 +562,7 @@ h3 {
 }
 
 .mid-col {
-    width: calc(100% - 150px);
+    width: calc(100% - 125px);
      @include mq(phablet){
            padding-left: 120px;
            width: 180px;
