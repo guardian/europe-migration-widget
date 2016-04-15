@@ -31,11 +31,11 @@ window.init = function init(el, config) {
 };
 
 function setupApp ( data ) {
-    console.log(d3);
+   
     dataset = data.sheets;
      
     console.log(dataset)
-     
+    
     buildView ( );
     
     addListeners();

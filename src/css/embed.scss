@@ -60,6 +60,8 @@ select:focus, button:focus {outline:0 !important;}
             font-family: Guardian Text Sans Web, Arial,sans-serif;
             font-size: 13px;
             font-weight: 500;
+            padding-left: 10px;
+            padding-bottom: 5px;
        }
        
        .tab-buttons {
@@ -79,7 +81,7 @@ select:focus, button:focus {outline:0 !important;}
     font-size: 15px;
 border-width: 0.0625rem;
 border-style: solid;
-margin: 12px 8px 0 0;
+margin: 6px 6px 0 0;
 padding: 5px 8px 5px 8px;
 
 &.highlighted {
